@@ -13,8 +13,15 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
     steps:
       - uses: actions/checkout@v4
+      - name: Read Pages domain and path
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+        id: pages
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -24,14 +31,14 @@ jobs:
         working-directory: web
       - name: Configure website
         env:
-          SITE_URL: ${{ vars.SITE_URL || format('https://{0}.github.io/anipriweb', github.repository_owner) }}
+          SITE_URL: ${{ vars.SITE_URL || (steps.pages.outputs.host && format('https://{0}{1}', steps.pages.outputs.host, steps.pages.outputs.base_path)) || format('https://{0}.github.io/anipriweb', github.repository_owner) }}
           GA_MEASUREMENT_ID: ${{ vars.GA_MEASUREMENT_ID }}
           CONTACT_FORM_ENDPOINT: ${{ vars.CONTACT_FORM_ENDPOINT }}
         run: node scripts/configure-site.mjs
       - name: Build static pages
         working-directory: web
         env:
-          SITE_BASE_HREF: ${{ vars.SITE_BASE_HREF || '/anipriweb/' }}
+          SITE_BASE_HREF: ${{ vars.SITE_BASE_HREF || (steps.pages.outputs.host && format('{0}/', steps.pages.outputs.base_path)) || '/anipriweb/' }}
         run: npm run build -- --base-href "$SITE_BASE_HREF"
       - name: Prepare Pages artifact
         run: |

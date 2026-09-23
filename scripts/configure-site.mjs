@@ -1,5 +1,5 @@
 import { writeFileSync, readFileSync } from "node:fs";
-const siteUrl = (process.env.SITE_URL || "https://anipriweb.com").replace(
+const siteUrl = (process.env.SITE_URL || "https://www.anipriweb.com").replace(
   /\/$/,
   "",
 );

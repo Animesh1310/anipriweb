@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://Animesh1310.github.io/anipriweb/sitemap.xml
+Sitemap: https://www.anipriweb.com/sitemap.xml

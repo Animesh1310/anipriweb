@@ -40,9 +40,11 @@ Repository variables for the standard repository URL:
 - `SITE_BASE_HREF`: `/anipriweb/`
 - `CONTACT_FORM_ENDPOINT`: optional override; defaults to `https://formspree.io/f/xgavywrq`
 
-For the custom domain `anipriweb.com`:
+Production builds read the domain and base path directly from GitHub Pages. The existing custom domain is `www.anipriweb.com`; the workflow uses `/` for its assets and routes. Repository variables remain optional overrides.
 
-- Set `SITE_URL` to `https://anipriweb.com`
+For an explicit custom-domain override:
+
+- Set `SITE_URL` to `https://www.anipriweb.com`
 - Set `SITE_BASE_HREF` to `/`
 - Configure/verify the domain in Pages and set DNS according to GitHub's displayed instructions. Inspect existing DNS and hosting before changing it.
 
