@@ -1,0 +1,78 @@
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container header-inner">
+    <a routerLink="/" class="brand" aria-label="AniPriWeb home"
+      ><span class="brand-mark">a<span>↗</span></span
+      ><span
+        >AniPri<span class="brand-light">Web</span
+        ><small>ENGINEERING · INTELLIGENCE · GROWTH</small></span
+      ></a
+    >
+    <button
+      class="menu-toggle"
+      (click)="menu.set(!menu())"
+      [attr.aria-expanded]="menu()"
+      aria-controls="navigation"
+    >
+      {{ menu() ? 'Close ✕' : 'Menu ☰' }}
+    </button>
+    <nav id="navigation" [class.open]="menu()" aria-label="Main navigation">
+      <a routerLink="/services" routerLinkActive="active">Services</a
+      ><a routerLink="/industries" routerLinkActive="active">Industries</a
+      ><a routerLink="/our-work" routerLinkActive="active">Our experience</a
+      ><a routerLink="/about" routerLinkActive="active">About</a
+      ><a routerLink="/contact" class="button small">Discuss your project <span>↗</span></a>
+    </nav>
+  </div>
+</header>
+<main id="main" tabindex="-1"><router-outlet /></main>
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <a routerLink="/" class="footer-brand">AniPriWeb<span>↗</span></a>
+      <p>Thoughtful engineering.<br />Useful intelligence. Lasting growth.</p>
+    </div>
+    <div>
+      <h2>Capabilities</h2>
+      <a routerLink="/services/custom-software">Software development</a
+      ><a routerLink="/services/ai-engineering">AI engineering</a
+      ><a routerLink="/services/digital-marketing">Digital marketing</a
+      ><a routerLink="/services/seo">SEO services</a>
+    </div>
+    <div>
+      <h2>Explore</h2>
+      <a routerLink="/industries">Industries</a><a routerLink="/our-work">Our experience</a
+      ><a routerLink="/about">About us</a><a routerLink="/contact">Contact</a>
+    </div>
+    <div>
+      <h2>Have something in mind?</h2>
+      <p>Tell us what you want to build, improve, or automate.</p>
+      <a routerLink="/contact" class="text-link">Let's talk <span>↗</span></a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 AniPriWeb</span><span>Built with purpose.</span
+    ><a routerLink="/privacy">Privacy</a>
+    @if (analytics.configured) {
+      <button class="privacy-control" (click)="analytics.showConsent.set(true)">
+        Cookie preferences
+      </button>
+    }
+  </div>
+</footer>
+
+@if (analytics.showConsent()) {
+  <aside class="consent-panel" aria-label="Optional analytics">
+    <div>
+      <strong>Help us improve the website?</strong>
+      <p>
+        With your permission, Google Analytics measures page visits and successful inquiries.
+        Inquiry details are never sent to analytics. <a routerLink="/privacy">Privacy notice</a>
+      </p>
+    </div>
+    <div>
+      <button class="button" (click)="analytics.accept()">Allow analytics</button
+      ><button class="button outline" (click)="analytics.decline()">Decline</button>
+    </div>
+  </aside>
+}
