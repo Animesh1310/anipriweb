@@ -9,8 +9,9 @@
 
 ## Remaining launch configuration
 
-The GitHub app returned 403 “Resource not accessible by integration” when creating a branch. Code is committed locally on `website/business-platform`, but no remote branch or pull request could be created. The current live website was not changed.
+GitHub access is connected. The website is uploaded to `website/business-platform` and proposed in pull request #1: https://github.com/Animesh1310/anipriweb/pull/1. The live website remains unchanged while the work stays on its separate branch.
 
 Configure a verified Formspree recipient/endpoint, the GitHub Pages source, the intended domain/base path, and optional GA4 ID as documented in README.md. Then run a real email delivery test. Confirm final business contact/privacy details before launch.
 
 Screenshots illustrate the implemented design; interfaces in the homepage are explicitly labeled concepts.
+
