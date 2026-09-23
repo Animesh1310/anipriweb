@@ -1,0 +1,10 @@
+web/node_modules/
+web/dist/
+web/.angular/
+api/bin/
+api/obj/
+api/data/
+.env
+*.db
+*.db-shm
+*.db-wal
