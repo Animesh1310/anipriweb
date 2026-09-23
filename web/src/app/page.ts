@@ -3,7 +3,8 @@ import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Title, Meta } from '@angular/platform-browser';
 import { FormsModule, NgForm } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { finalize, timeout } from 'rxjs';
 import { services, industries } from './content';
 import { Analytics } from './analytics';
 import { siteConfig } from './site-config';
@@ -75,8 +76,12 @@ export class Page {
     canonical.href = siteConfig.siteUrl + (path === '/' ? '/' : path);
     meta.updateTag({ property: 'og:url', content: canonical.href });
   }
-  async submit(f: NgForm) {
-    if (f.invalid || this.pending()) return;
+  submit(f: NgForm) {
+    if (this.pending() || this.reference()) return;
+    if (f.invalid) {
+      f.control.markAllAsTouched();
+      return;
+    }
     this.pending.set(true);
     this.error.set('');
     if (!this.formConfigured) {
@@ -84,25 +89,44 @@ export class Page {
       this.error.set('Online inquiries are not available yet. Please check back shortly.');
       return;
     }
+    const { companyWebsite, phone, ...details } = this.form;
     const payload = {
-      ...this.form,
+      ...details,
+      name: details.name.trim(),
+      email: details.email.trim(),
       _subject: 'AniPriWeb project inquiry',
-      _gotcha: this.form.companyWebsite,
+      _gotcha: companyWebsite,
     };
     this.http
       .post(siteConfig.formEndpoint, payload, { headers: { Accept: 'application/json' } })
+      .pipe(
+        timeout(20000),
+        finalize(() => this.pending.set(false)),
+      )
       .subscribe({
         next: () => {
           this.reference.set('submitted');
           this.analytics.lead();
-          this.pending.set(false);
           if (isPlatformBrowser(this.platform))
             setTimeout(() => this.doc.getElementById('success')?.focus());
         },
-        error: () => {
-          this.pending.set(false);
+        error: (response: HttpErrorResponse) => {
+          const errors: unknown = response.error?.errors;
+          const messages = Array.isArray(errors)
+            ? errors
+                .map((entry: unknown) => {
+                  if (typeof entry !== 'object' || entry === null || !('message' in entry))
+                    return '';
+                  return typeof entry.message === 'string' ? entry.message.slice(0, 300) : '';
+                })
+                .filter(Boolean)
+                .slice(0, 3)
+            : [];
           this.error.set(
-            'Your inquiry could not be sent. Your details are still here. Please try again shortly.',
+            messages.length
+              ? messages.join(' ') +
+                  ' Your details are still here; please correct the issue and try again.'
+              : 'Your inquiry could not be sent or confirmed. Your details are still here. Please try again shortly.',
           );
         },
       });

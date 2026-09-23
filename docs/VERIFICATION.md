@@ -11,7 +11,8 @@
 
 GitHub access is connected. The website is uploaded to `website/business-platform` and proposed in pull request #1: https://github.com/Animesh1310/anipriweb/pull/1. The live website remains unchanged while the work stays on its separate branch.
 
-Configure a verified Formspree recipient/endpoint, the GitHub Pages source, the intended domain/base path, and optional GA4 ID as documented in README.md. Then run a real email delivery test. Confirm final business contact/privacy details before launch.
+The supplied Formspree endpoint `https://formspree.io/f/xgavywrq` is connected in source and as the build-time default. JSON submissions preserve the tailored inquiry fields and honeypot; provider errors retain the entered details, and requests have a 20-second timeout. No automatic retries are used, to avoid duplicate inquiries.
+
+Configure the GitHub Pages source, intended domain/base path, and optional GA4 ID as documented in README.md. Verify the Formspree recipient and run a real email delivery test after deployment. Confirm final business contact/privacy details before launch.
 
 Screenshots illustrate the implemented design; interfaces in the homepage are explicitly labeled concepts.
-

@@ -12,19 +12,19 @@ npm ci
 npm start
 ```
 
-The form remains visibly unavailable until a real Formspree endpoint is configured. No submission is simulated. UI previews work without a form account.
+The inquiry form is connected to `https://formspree.io/f/xgavywrq`. Angular's HTTP client submits JSON using the AJAX approach, without a redirect or an extra React/CDN dependency. Success is shown only after Formspree accepts the request.
 
 ## Contact form setup
 
-1. Create a form at https://formspree.io and verify the receiving business email.
-2. Set the GitHub repository variable `CONTACT_FORM_ENDPOINT` to `https://formspree.io/f/YOUR_FORM_ID`.
+1. In your existing Formspree form (`xgavywrq`), verify the receiving business email.
+2. No repository variable is required for this endpoint: it is the default in development and production builds. Optionally override it with `CONTACT_FORM_ENDPOINT` if you change forms.
 3. In Formspree, enable appropriate domain restrictions, spam controls and notifications. Confirm current plan limits. Set an acknowledgment email there if wanted.
-4. Submit a real test inquiry after deployment and verify it arrives. This requires the owner's account; a valid endpoint cannot be invented.
+4. Submit a real test inquiry after deployment and verify it arrives. Automated UI tests intercept requests rather than sending messages to your inbox.
 
 For local testing:
 
 ```sh
-CONTACT_FORM_ENDPOINT=https://formspree.io/f/YOUR_FORM_ID node scripts/configure-site.mjs
+node scripts/configure-site.mjs
 cd web && npm start
 ```
 
@@ -38,7 +38,7 @@ Repository variables for the standard repository URL:
 
 - `SITE_URL`: `https://Animesh1310.github.io/anipriweb`
 - `SITE_BASE_HREF`: `/anipriweb/`
-- `CONTACT_FORM_ENDPOINT`: the verified form endpoint
+- `CONTACT_FORM_ENDPOINT`: optional override; defaults to `https://formspree.io/f/xgavywrq`
 
 For the custom domain `anipriweb.com`:
 
@@ -71,7 +71,7 @@ Experience is described as approximately ten years across software and digital s
 ## Launch checklist
 
 - Confirm final brand and content, service scope, domain, and publishable project material.
-- Connect and test Formspree; confirm privacy notice, retention and account access for your business before receiving real inquiries.
+- Formspree endpoint is connected; verify recipient delivery and confirm privacy notice, retention and account access before launch.
 - Configure Pages and domain variables; run workflow; check HTTPS and a direct nested page URL.
 - Register the deployed domain in Google Search Console and Bing Webmaster Tools and submit `/sitemap.xml`.
 - Optional GA4: set `GA_MEASUREMENT_ID` to your `G-...` ID. The consent prompt appears only when configured; no analytics loads before acceptance. Decline remains available in footer preferences. The `generate_lead` event fires only after Formspree accepts the request and contains no inquiry details. Register that event as a key event in your GA4 account. Verify consent behavior and disable enhanced-measurement form interactions in GA4; do not enable collection of user-provided data. Clarity is not installed.

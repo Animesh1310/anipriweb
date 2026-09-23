@@ -6,7 +6,9 @@ const siteUrl = (process.env.SITE_URL || "https://anipriweb.com").replace(
 const analyticsId = process.env.GA_MEASUREMENT_ID || "";
 if (analyticsId && !/^G-[A-Z0-9]+$/.test(analyticsId))
   throw Error("Invalid GA4 measurement ID");
-const formEndpoint = process.env.CONTACT_FORM_ENDPOINT || "";
+// This public form URL is not an API secret. A repository variable can override it.
+const formEndpoint =
+  process.env.CONTACT_FORM_ENDPOINT || "https://formspree.io/f/xgavywrq";
 if (!/^https:\/\/[a-z0-9.-]+(?::\d+)?(?:\/[a-zA-Z0-9_/-]+)?$/i.test(siteUrl))
   throw Error("SITE_URL must be an HTTPS URL without query or fragment");
 if (
